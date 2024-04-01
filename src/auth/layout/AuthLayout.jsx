@@ -24,4 +24,4 @@ export const AuthLayout = ({ children, title='' }) => {
             </Grid>
         </Grid>
     )
-}
+};
