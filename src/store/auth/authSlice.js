@@ -1,5 +1,4 @@
 
-
 import { createSlice } from '@reduxjs/toolkit';
 
 export const authSlice = createSlice({
@@ -14,16 +13,22 @@ export const authSlice = createSlice({
     },
     reducers: {
 
-        login: (state, action) => {
-            state.status = action.payload.status;
-            state.uid = action.payload.uid;
-            state.email = action.payload.email;
-            state.displayName = action.payload.displayName;
-            state.photoURL = action.payload.photoURL;
+        login: (state, { payload }) => {
+            state.status = payload.status;
+            state.uid = payload.uid;
+            state.email = payload.email;
+            state.displayName = payload.displayName;
+            state.photoURL = payload.photoURL;
+            state.erroMessage = null;
         },
 
         logOut: (state, payload) => {
-
+            state.status = 'not-authenticated',
+            state.uid = null,
+            state.email = null,
+            state.displayName = null,
+            state.photoURL = null,
+            state.erroMessage = payload.erroMessage;
         },
 
         //Verifica si esta autenticado o no

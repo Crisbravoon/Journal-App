@@ -1,18 +1,21 @@
 
+import { useMemo } from 'react';
+import {useSelector} from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from "@mui/icons-material";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 
-
-import { checkingAuthentication, googleSingIn } from '../../store/auth';
+import { checkingAuthentication, startGoogleSingIn } from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 
 
 export const LoginPage = () => {
 
-    const dispatch = useDispatch()
+    const { status } = useSelector(state => state.auth);
+
+    const dispatch = useDispatch();
 
     const { email, password, onInputChange } = useForm({
         email: 'cristobalbravon@gmail.com',
@@ -21,13 +24,14 @@ export const LoginPage = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
         dispatch(checkingAuthentication({ email, password }));
     };
 
+    const isAuthenticating = useMemo(() => status === 'checking', [status])
+
     const onGoogleSingIn = (e) => {
         console.log('Google Sing In');
-        dispatch(googleSingIn());
+        dispatch(startGoogleSingIn());
     };
 
     return (
@@ -63,6 +67,7 @@ export const LoginPage = () => {
                             sx={{ mt: 1, mb: 2 }} >
                             <Grid item xs={12} sm={6}>
                                 <Button
+                                    disabled={isAuthenticating}
                                     type='submit'
                                     fullWidth
                                     variant='contained'>
@@ -72,6 +77,7 @@ export const LoginPage = () => {
 
                             <Grid item xs={12} sm={6}>
                                 <Button
+                                    disabled={isAuthenticating}
                                     fullWidth
                                     variant='contained'
                                     onClick={onGoogleSingIn}>
