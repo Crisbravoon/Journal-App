@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 export const useForm = (initialState = {}, formValidations = {}) => {
 
-    const [formState, setFormState] = useState(initialState)
+    const [formState, setFormState] = useState(initialState);
+
     // Nos Dice si hay error o no hay error.
     const [formValidation, setFormValidation] = useState({});
 
@@ -12,17 +13,18 @@ export const useForm = (initialState = {}, formValidations = {}) => {
         createValidators();
     }, [formState]);
 
-    const isFormValid = useMemo(()=>{
+    const isFormValid = useMemo(() => {
+
         //Recorrera si tiene valor de NULL
         for (const formValue of Object.keys(formValidation)) {
-            
+
             //Si es diferente de null
-            if(formValidation[formValue] !== null) return false;
+            if (formValidation[formValue] !== null) return false;
         };
         return true;
 
-    //Se ejecutara cuando : formValidation cambie
-    },[formValidation]);
+        //Se ejecutara cuando : formValidation cambie
+    }, [formValidation]);
 
     //Obtengo los valores de los inputs del form.
     const onInputChange = ({ target }) => {
@@ -51,7 +53,6 @@ export const useForm = (initialState = {}, formValidations = {}) => {
 
             //Guardo los datos.
             setFormValidation(formCheckedValues);
-            console.log(formCheckedValues);
         };
     };
 

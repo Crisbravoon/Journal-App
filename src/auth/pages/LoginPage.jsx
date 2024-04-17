@@ -1,53 +1,54 @@
 
 import { useMemo } from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material";
 
-import { checkingAuthentication, startGoogleSingIn } from '../../store/auth';
+import { startGoogleSingIn, startLoginWithEmail } from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 
 
 export const LoginPage = () => {
 
-    const { status } = useSelector(state => state.auth);
+    const { status, errorMessage } = useSelector(state => state.auth);
 
     const dispatch = useDispatch();
 
     const { email, password, onInputChange } = useForm({
-        email: 'cristobalbravon@gmail.com',
-        password: 'cris123'
+        email: '',
+        password: ''
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(checkingAuthentication({ email, password }));
+        dispatch(startLoginWithEmail({ email, password }));
     };
 
     const isAuthenticating = useMemo(() => status === 'checking', [status])
 
     const onGoogleSingIn = (e) => {
-        console.log('Google Sing In');
         dispatch(startGoogleSingIn());
     };
 
     return (
         <>
             <AuthLayout title='Login 👋'>
-                <form onClick={onSubmit}>
+                <form
+                    className='animate__animated animate__fadeIn animated__faster'
+                    onSubmit={onSubmit}>
                     <Grid container>
                         <Grid item xs={12} sx={{ mt: 2 }} >
                             <TextField
                                 name='email'
                                 onChange={onInputChange}
                                 value={email}
-                                label='Correo'
-                                type='email'
                                 placeholder='correo@gmail.com'
                                 fullWidth
+                                label='Correo'
+                                type='email'
                             />
                         </Grid>
                         <Grid item xs={12} sx={{ mt: 2 }}>
@@ -61,16 +62,23 @@ export const LoginPage = () => {
                                 fullWidth
                             />
                         </Grid>
+
+                        <Grid container
+                            sx={{ mt: 2 }}
+                            display={!!errorMessage ? '' : 'none'}>
+                            <Grid item xs={12}>
+                                <Alert severity='error'>{errorMessage}</Alert>
+                            </Grid>
+                        </Grid>
+
                         <Grid
-                            container
-                            spacing={2}
-                            sx={{ mt: 1, mb: 2 }} >
+                            container spacing={2} sx={{ mt: 1, mb: 2 }} >
                             <Grid item xs={12} sm={6}>
                                 <Button
                                     disabled={isAuthenticating}
-                                    type='submit'
+                                    type="submit"
                                     fullWidth
-                                    variant='contained'>
+                                    variant="contained">
                                     Login
                                 </Button>
                             </Grid>
