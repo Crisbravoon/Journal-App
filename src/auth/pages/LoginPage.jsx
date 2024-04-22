@@ -3,8 +3,9 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { Google } from "@mui/icons-material";
+
 import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { Google } from "@mui/icons-material";
 
 import { startGoogleSingIn, startLoginWithEmail } from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout';

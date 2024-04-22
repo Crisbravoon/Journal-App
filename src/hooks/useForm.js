@@ -13,6 +13,12 @@ export const useForm = (initialState = {}, formValidations = {}) => {
         createValidators();
     }, [formState]);
 
+    //Cargara los datos nuevamente al seleccionar una nota
+    useEffect(() => {
+        setFormState(initialState);
+    }, [initialState]);
+    
+
     const isFormValid = useMemo(() => {
 
         //Recorrera si tiene valor de NULL
