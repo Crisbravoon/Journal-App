@@ -1,9 +1,9 @@
 
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 
-import { addNewNote, createNewNote, setActiveNote, setNotes, setSaved, updateNote } from "./journalSlice";
-import { loadNotes } from "../../helpers";
+import { addNewNote, createNewNote, deleteNoteById, setActiveNote, setNotes, setPhotosToActiveNotes, setSaved, updateNote } from "./journalSlice";
+import { fileUpload, loadNotes } from "../../helpers";
 
 // Dispatch (Acciones) para crear una nueva nota
 export const startNewNote = () => {
@@ -19,6 +19,7 @@ export const startNewNote = () => {
             title: '',
             body: '',
             date: new Date().getTime(),
+            imageUrl: [],
         };
 
         //Agregar la nueva nota a la base de datos
@@ -69,5 +70,40 @@ export const startSaveNote = () => {
         await setDoc(docRef, noteToFireStore, { merge: true });
 
         dispatch(updateNote(active));
+    }
+};
+
+//Sube imagenes a Cloudinary
+export const startUploadingFiles = (files = []) => {
+    return async (dispatch) => {
+
+        dispatch(setSaved());
+
+        //Creando arreglo de promesas de los files.
+        const fileUploadPromises = [];
+        for (const file of files) {
+            fileUploadPromises.push(fileUpload(file));
+        };
+
+        //Ejecutando las promesas.
+        const photosUrls = await Promise.all(fileUploadPromises);
+
+        dispatch(setPhotosToActiveNotes(photosUrls));
+    }
+};
+
+export const startDeletingNote = () => {
+    return async (dispatch, getState) => {
+
+        const { uid } = getState().auth;
+        const { active } = getState().journal;
+
+        //Señalamos la ruta en donde esta.
+        const docRef = doc(FirebaseDB, `${uid}/journal/notes/${active.id}`);
+
+        await deleteDoc(docRef);
+
+        //Limpiar del store
+        dispatch(deleteNoteById(active.id));
     }
 };

@@ -1,8 +1,8 @@
 
+import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
 
 import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { Google } from "@mui/icons-material";
@@ -11,6 +11,10 @@ import { startGoogleSingIn, startLoginWithEmail } from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 
+const formData ={
+    email: '',
+    password: ''
+};
 
 export const LoginPage = () => {
 
@@ -18,10 +22,7 @@ export const LoginPage = () => {
 
     const dispatch = useDispatch();
 
-    const { email, password, onInputChange } = useForm({
-        email: '',
-        password: ''
-    });
+    const { email, password, onInputChange } = useForm(formData);
 
     const onSubmit = (e) => {
         e.preventDefault();

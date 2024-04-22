@@ -32,23 +32,34 @@ export const journalSlice = createSlice({
         setNotes: (state, action) => {
             //Agregamos las notas.
             state.notes = action.payload;
+            state.messageSaved = '';
         },
         setSaved: (state) => {
             state.isSaving = true;
+            state.messageSaved = '';
         },
         updateNote: (state, action) => {
             state.isSaving = false;
             state.notes = state.notes.map(note => {
-            //Valida la nota por el ID.
+                //Valida la nota por el ID.
                 if (note.id === action.payload.id) {
                     return action.payload;
                 }
                 return note;
             })
+            state.messageSaved = `Se actualizo la Nota: ${action.payload.title}`;
         },
         deleteNoteById: (state, action) => {
+            state.active = null;
+            //Filtra para quitar cuya nota tenga el id sea en la acción de payload
+            state.notes = state.notes.filter(note => note.id !== action.payload);
 
         },
+        setPhotosToActiveNotes: (state, action) => {
+            state.isSaving = false;
+            //En arreglo quedan las fotos antiguas y las nuevas.
+            state.active.imageUrl = [...state.active.imageUrl, ...action.payload];
+        }
     }
 });
 
@@ -59,4 +70,5 @@ export const {
     setNotes,
     setSaved,
     updateNote,
+    setPhotosToActiveNotes,
     deleteNoteById } = journalSlice.actions;

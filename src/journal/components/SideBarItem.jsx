@@ -20,6 +20,7 @@ export const SideBarItem = ({ title = '', body, id, date, imageUrl = [] }) => {
     }, [title]);
 
 
+
     return (
         <ListItem disablePadding>
             <ListItemButton onClick={onClickNote}>
@@ -30,6 +31,7 @@ export const SideBarItem = ({ title = '', body, id, date, imageUrl = [] }) => {
                     <ListItemText primary={newTitle} />
                     <ListItemText secondary={body} />
                 </Grid>
+
             </ListItemButton>
         </ListItem>
     )
