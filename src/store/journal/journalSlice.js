@@ -59,6 +59,12 @@ export const journalSlice = createSlice({
             state.isSaving = false;
             //En arreglo quedan las fotos antiguas y las nuevas.
             state.active.imageUrl = [...state.active.imageUrl, ...action.payload];
+        },
+        clearNotesLogOut: (state) => {
+            state.isSaving = false;
+            state.notes = [];
+            state.active = null;
+            state.messageSaved = '';
         }
     }
 });
@@ -67,6 +73,7 @@ export const {
     createNewNote,
     addNewNote,
     setActiveNote,
+    clearNotesLogOut,
     setNotes,
     setSaved,
     updateNote,

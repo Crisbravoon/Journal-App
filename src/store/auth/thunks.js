@@ -1,5 +1,6 @@
 
 import { LoginUserWithEmail, logOutFireBase, registerUserWithEmail, singInWithGoogle } from "../../firebase/providers";
+import { clearNotesLogOut } from "../journal/journalSlice";
 import { checkingCredentials, logOut, login } from "./";
 
 //Tareas async y Acciones que puedo despachar (dispatch);
@@ -51,7 +52,6 @@ export const startCreatingUserWithEmail = ({ email, password, displayName }) => 
 export const startLoginWithEmail = ({ email, password }) => {
 
     return async (dispatch) => {
-
         //Realiza la acción de validación de autenticación.
         dispatch(checkingCredentials());
 
@@ -68,6 +68,7 @@ export const startLogOut = () => {
     return async (dispatch) => {
 
         await logOutFireBase();
+        dispatch(clearNotesLogOut());
         dispatch(logOut());
     };
 }
