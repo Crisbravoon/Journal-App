@@ -9,7 +9,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBnxaPV36M4dDb5NZesSq-m-A3TPvrYvyA",
-    authDomain: "react-journal-dfcc6.firebaseapp.com",
+    authDomain: "journal-app-kappa-ten.vercel.app",
     projectId: "react-journal-dfcc6",
     storageBucket: "react-journal-dfcc6.appspot.com",
     messagingSenderId: "503273023882",
